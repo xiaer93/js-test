@@ -1,0 +1,18 @@
+{
+  "name": "js-test",
+  "version": "1.0.0",
+  "description": "JavaScript测试驱动开发",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.2.0"
+  }
+}
