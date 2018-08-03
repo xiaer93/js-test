@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "fs-promise": "^2.0.3",
     "chai": "^4.1.2",
     "mocha": "^5.2.0",
     "istanbul": "^0.4.5",
