@@ -20,28 +20,28 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">18.18% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>11/11</span>
+        <span class='fraction'>2/11</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>6/6</span>
+        <span class='fraction'>0/6</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">0% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>1/1</span>
+        <span class='fraction'>0/1</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">18.18% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>11/11</span>
+        <span class='fraction'>2/11</span>
       </div>
     </div>
   </div>
-  <div class='status-line high'></div>
+  <div class='status-line low'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -75,50 +75,50 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8×</span>
-<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7×</span>
-<span class="cline-any cline-yes">3×</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4×</span>
-<span class="cline-any cline-yes">4×</span>
-<span class="cline-any cline-yes">3×</span>
-<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * Created by xiaer on 2018/7/27.
  */
 &nbsp;
-function isPalindrome(word) {
+<span class="fstat-no" title="function not covered" >function isPalindrome(word) {</span>
   // �쳣����
-  if(word === undefined) {
-    throw new Error('Invalid argument')
+<span class="cstat-no" title="statement not covered" >  if(word === undefined) {</span>
+<span class="cstat-no" title="statement not covered" >    throw new Error('Invalid argument')</span>
   }
   // ������� &amp;&amp; �������
-  if(typeof word !== 'number'){
-    return false
+<span class="cstat-no" title="statement not covered" >  if(typeof word !== 'number'){</span>
+<span class="cstat-no" title="statement not covered" >    return false</span>
   }
 &nbsp;
   // �ڿ�����������У��µĲ��԰�����������ϸ�ڣ����ɵĲ���ȷ��������������~����ڴ�����������У����Կ�����֤����~
   // return word.toString().split('').reverse().join('') === word.toString()
-  var tmpWord = word.toString()
-  for(var i = 0, j = tmpWord.length - 1; i &lt; j; ++i, --j) {
-    if(tmpWord[i] !== tmpWord[j]) {
-      return false
+<span class="cstat-no" title="statement not covered" >  var tmpWord = word.toString()</span>
+<span class="cstat-no" title="statement not covered" >  for(var i = 0, j = tmpWord.length - 1; i &lt; j; ++i, --j) {</span>
+<span class="cstat-no" title="statement not covered" >    if(tmpWord[i] !== tmpWord[j]) {</span>
+<span class="cstat-no" title="statement not covered" >      return false</span>
     }
   }
 &nbsp;
-  return true
+<span class="cstat-no" title="statement not covered" >  return true</span>
 }
 &nbsp;
 module.exports = isPalindrome</pre></td></tr>
@@ -127,7 +127,7 @@ module.exports = isPalindrome</pre></td></tr>
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Aug 02 2018 09:44:16 GMT+0800 (中国标准时间)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Aug 05 2018 15:09:02 GMT+0800 (中国标准时间)
 </div>
 </div>
 <script src="../prettify.js"></script>

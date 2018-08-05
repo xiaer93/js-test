@@ -13,6 +13,7 @@ describe('fetch location test', function () {
        throw 'not expected'
      }
 
+     // 手动修改mocha异步等待时间，默认为2s
      this.timeout(10000)
      fetchLocation(onSuccess, onError)
   })

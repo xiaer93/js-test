@@ -22,7 +22,9 @@ tdd驱动开发
 // 异步函数的测试---支持callback形式和promise形式
 1、结果异步返回
 2、超时如何处理？
+3/推荐使用promise而不是callback，promise测试更优雅~
 
 // 异步处理，如获取地理位置信息，导致无法获取信息的bug很多，且测试较慢，需要进一步优化~~~
+// 减少这些依赖~~you’ll explore ways to replace them with test doubles like fakes, stubs, mocks, or spies.
 
 阅读记录：75页~~~！！！！

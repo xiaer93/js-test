@@ -10,14 +10,14 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha', 'chai'],
+    frameworks: ['mocha', 'chai', "sinon", "sinon-chai"],
 
 
     // 将下面js加载到浏览器中执行测试~？
     // list of files / patterns to load in the browser
     files: [
-      'src/client-side/*.js',
-      'test/client-side/*.js'
+      'src/baiduMap/*.js',
+      'test/baiduMap/*.js'
     ],
 
 

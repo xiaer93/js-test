@@ -1,0 +1,22 @@
+/**
+ * Created by xiaer on 2018/8/5.
+ */
+var locate = function () {
+  // 查询当前经纬度
+  navigator.geolocation.getCurrentPosition(
+    function (position) {
+      var latitude = position.coords.latitude
+      var longitude = position.coords.longitude
+  
+      // 跳转到百度地图对应位置~~~
+      var url = 'https://map.baidu.com/?q=' + latitude + ',' + longitude
+      window.location.href = url
+  
+    },
+    function () {
+      document.getElementById('error').innerHTML = 'unable to get your location'
+    }
+  )
+}
+
+// 上面代码不符合单一职责原则，难以测试维护~
