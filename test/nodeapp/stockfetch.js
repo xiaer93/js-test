@@ -216,4 +216,110 @@ describe('getprice test', function () {
     stockfetch.processResponse('GOOG', response)
     processErrorMock.verify()
   })
+
+  it('processHttpError should call processError with error details', function () {
+    var processErrorMock = sandbox.mock(stockfetch)
+      .expects('processError')
+      .withArgs('GOOG', '...error code...')
+
+    var error = {code: '...error code...'}
+    stockfetch.processHttpError('GOOG', error)
+    processErrorMock.verify()
+  })
+
+
+  // 从服务端获取到的数据
+  var data = "Date,Open,High,Low,Close,Volume,Adj Close\n2015-09-11,619.75,625.780029,617.419983,625.77002,1360900,625.77002\n2015-09-10,613.099976,624.159973,611.429993,621.349976,1900500,621.349976";
+  it('parsePrice should update prices', function () {
+    stockfetch.parsePrice('GOOG', data)
+    expect(stockfetch.prices.GOOG).to.be.eql('625.77002')
+  })
+  it('parsePrice should call printReport', function () {
+    var printReportMock = sandbox.mock(stockfetch)
+      .expects('printReport')
+
+    stockfetch.parsePrice('GOOG', data)
+    printReportMock.verify()
+  })
+  it('processError should update errors', function () {
+    stockfetch.processError('GOOG', '...oops...')
+    expect(stockfetch.errors.GOOG).to.be.eql('...oops...')
+  })
+  it('processError should call printReport', function () {
+    var printReportMock = sandbox.mock(stockfetch)
+      .expects('printReport')
+
+    stockfetch.processError('GOOG', '...oops...')
+    printReportMock.verify()
+  })
+
+  it('printReport should send price, errors once all response arrive', function () {
+    stockfetch.prices = {'GOOG': 12.34}
+    stockfetch.errors = {'AAPL': 'error'}
+    stockfetch.tickersCount = 2
+
+    var callbackMock = sandbox.mock(stockfetch)
+      .expects('reportCallback')
+      .withArgs([['GOOG', 12.34]], [['AAPL', 'error']])
+
+    stockfetch.printReport()
+    callbackMock.verify()
+  })
+  it('printReport should not send before all response arrive', function () {
+    stockfetch.prices = {'GOOG': 12.34}
+    stockfetch.errors = {'AAPL': 'error'}
+    stockfetch.tickersCount = 4
+
+    var callbackMock = sandbox.mock(stockfetch)
+      .expects('reportCallback')
+      .never()
+
+    stockfetch.printReport()
+    callbackMock.verify()
+  })
+  it('printReport should call sortData once for prices, once fro errors', function () {
+    stockfetch.prices = {'GOOG': 12.34}
+    stockfetch.errors = {'AAPL': 'error'}
+    stockfetch.tickersCount = 2
+
+    var mock = sandbox.mock(stockfetch)
+    mock.expects('sortData').withArgs(stockfetch.prices)
+    mock.expects('sortData').withArgs(stockfetch.errors)
+
+    stockfetch.printReport()
+    mock.verify()
+  })
+  it('sortData should sort the data based on the symbol', function () {
+    var dataToSort = {
+      'GOOG': 1.2,
+      'AAPL': 2.1
+    }
+
+    var result = stockfetch.sortData(dataToSort)
+    expect(result).to.be.eql([['AAPL', 2.1], ['GOOG', 1.2]])
+  })
+
+  it('getPriceForTickers should report error for invalid file', function (done) {
+    var onError = function (error) {
+      expect(error).to.be.eql('Error reading file: InvalidFile')
+      done()
+    }
+
+    var display = function () {}
+
+    stockfetch.getPriceForTickers('InvalidFile', display, onError)
+  })
+  it('getPriceForTickers should report well for a valid file', function (done) {
+    var onError = sandbox.mock().never()
+
+    var display = function (prices, errors) {
+      expect(prices.length).to.be.eql(5)
+      expect(errors.length).to.be.eql(0)
+      onError.verify()
+      done()
+    }
+
+    this.timeout(2000)
+    stockfetch.getPriceForTickers('test/nodeapp/123', display, onError)
+  })
 })

@@ -22,15 +22,14 @@ var StockFetch = function () {
     }
 
     fs.readFile(fileName, processResponse)
-    
-
   }
   this.parseTickers = function (rawData) {
     var isInRightFormat = function (str) {
       return str.trim().length !== 0 && str.indexOf(' ') < 0
     }
 
-    return rawData.split('\n').filter(isInRightFormat)
+    // readFile未设置编码形式，需要在这里手动转换？
+    return rawData.toString('utf-8').split('\n').filter(isInRightFormat)
   }
   
   this.processTickers = function (tickers) {
@@ -69,6 +68,8 @@ var StockFetch = function () {
     }
   }*/
 
+  this.prices = {}
+  this.errors = {}
   this.http = http
   this.getPrice = function (symbol) {
     var url = 'http://example.com?s=' + symbol
@@ -90,16 +91,36 @@ var StockFetch = function () {
       this.processError(symbol, response.statusCode)
     }
   }
-  this.processError = function () {
+  this.processError = function (symbol, errMsg) {
+    this.errors[symbol] = errMsg
+    this.printReport()
+  }
+  this.parsePrice = function (symbol, data) {
+    var price = data.split('\n')[1].split(',').pop()
+    this.prices[symbol] = price
+    this.printReport()
+  }
+  this.processHttpError = function (symbol, error) {
+    this.processError(symbol, error.code)
+  }
+  this.printReport = function () {
+    if(this.tickersCount === (Object.keys(this.prices).length + Object.keys(this.errors).length)){
+      this.reportCallback(this.sortData(this.prices), this.sortData(this.errors))
+    }
+  }
+  this.sortData = function (dataToSort) {
+    var toArray = function (key) {
+      return [key, dataToSort[key]]
+    }
+    return Object.keys(dataToSort).sort().map(toArray)
+  }
+  this.reportCallback = function () {
     
   }
-  this.parsePrice = function (symbol, price) {
-
-  }
-  this.processHttpError = function () {
-    
-  }
-  
+  this.getPriceForTickers = function(fileName, displayFn, errorFn) {
+    this.reportCallback = displayFn;
+    this.readTickersFile(fileName, errorFn);
+  };
 }
 
 module.exports = StockFetch
