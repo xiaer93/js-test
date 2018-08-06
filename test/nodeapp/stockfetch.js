@@ -103,3 +103,117 @@ describe('Stockfetch test', function () {
     expect(stockfetch.tickersCount).to.be.eql(3)
   })
 })
+
+describe('getprice test', function () {
+  var stockfetch
+  var sandbox
+
+  beforeEach(function () {
+    stockfetch = new StockFetch()
+    sandbox = sinon.createSandbox()
+  })
+  afterEach(function () {
+    sandbox.restore()
+  })
+
+  it('getprice should call get on http with valid URL', function (done) {
+    var httpStub = sandbox.stub(stockfetch.http, 'get').callsFake(function (url) {
+      expect(url).to.be.eql('http://example.com?s=GOOG')
+      done()
+      return {
+        on: function () {
+          
+        }
+      }
+    })
+
+    stockfetch.getPrice('GOOG')
+  })
+  it('getPrice should send a response handler to get', function (done) {
+    var aHandler = function () {
+
+    }
+
+    sandbox.stub(stockfetch.processResponse, 'bind')
+      .withArgs(stockfetch, 'GOOG')
+      .returns(aHandler)
+
+    var httpStub = sandbox.stub(stockfetch.http, 'get').callsFake(function (url, handler) {
+      expect(handler).to.be.eql(aHandler)
+      done()
+      return {on: function () {
+        
+      }}
+    })
+
+    stockfetch.getPrice('GOOG')
+  })
+  it('getPrice should register handler for failure to reach host', function (done) {
+    var errorHandler = function () {}
+
+    sandbox.stub(stockfetch.processError, 'bind')
+      .withArgs(stockfetch, 'GOOG')
+      .returns(errorHandler)
+
+    var onStub = function (event, handler) {
+      expect(event).to.be.eql('error')
+      expect(handler).to.be.eql(errorHandler)
+      done()
+    }
+
+    sandbox.stub(stockfetch.http, 'get').returns({on: onStub})
+    stockfetch.getPrice('GOOG')
+  })
+  
+  it('processResponse should call parsePrice with valid data', function () {
+    var dataFunction
+    var endFunction
+    
+    var response = {
+      statusCode: 200,
+      // 在response中定义函数，使dataFunction可以获取到正确函数对象~~~
+      on: function (event, handler) {
+        if(event === 'data') {
+          dataFunction = handler
+        }
+        if(event === 'end') {
+          endFunction = handler
+        }
+      }
+    }
+
+    var parsePriceMock = sandbox.mock(stockfetch)
+      .expects('parsePrice')
+      .withArgs('GOOG', 'some data');
+
+    stockfetch.processResponse('GOOG', response)
+    dataFunction('some ')
+    dataFunction('data')
+    endFunction()
+
+    parsePriceMock.verify();
+
+  })
+  it('processResponse should call processError if response failed', function () {
+    var response = {statusCode: 404}
+    var processErrorMock = sandbox.mock(stockfetch)
+      .expects('processError')
+      .withArgs('GOOG', 404)
+
+    stockfetch.processResponse('GOOG', response)
+    processErrorMock.verify()
+  })
+  it('processResponse should call processError only if response failed', function () {
+    var response = {
+      statusCode: 200,
+      on: function () {}
+    }
+
+    var processErrorMock = sandbox.mock(stockfetch)
+      .expects('processError')
+      .never()
+
+    stockfetch.processResponse('GOOG', response)
+    processErrorMock.verify()
+  })
+})
